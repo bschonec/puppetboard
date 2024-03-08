@@ -9,7 +9,7 @@ LABEL org.label-schema.maintainer="Voxpupuli Team <info@voxpupuli.org>" \
       org.label-schema.dockerfile="/Dockerfile"
 
 ENV PUPPETBOARD_PORT 80
-ENV PUPPETBOARD_HOST 0.0.0.0
+ENV PUPPETBOARD_HOST nfiv-puppdb-02p.nfii.com
 ENV PUPPETBOARD_STATUS_ENDPOINT /status
 ENV PUPPETBOARD_SETTINGS docker_settings.py
 EXPOSE 80
