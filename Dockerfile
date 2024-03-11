@@ -24,4 +24,4 @@ RUN pip install --no-cache-dir -r requirements-docker.txt .
 
 COPY Dockerfile /
 
-CMD gunicorn -b ${PUPPETBOARD_HOST}:${PUPPETBOARD_PORT} --preload --workers="${PUPPETBOARD_WORKERS:-1}" -e SCRIPT_NAME="${PUPPETBOARD_URL_PREFIX:-}" --access-logfile=- puppetboard.app:app
+CMD gunicorn -b 10.100.100.128:80 --preload --workers="${PUPPETBOARD_WORKERS:-1}" -e SCRIPT_NAME="${PUPPETBOARD_URL_PREFIX:-}" --access-logfile=- puppetboard.app:app
