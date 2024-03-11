@@ -14,8 +14,6 @@ ENV PUPPETBOARD_STATUS_ENDPOINT /status
 ENV PUPPETBOARD_SETTINGS docker_settings.py
 EXPOSE 80
 
-HEALTHCHECK --interval=1m --timeout=5s --start-period=10s CMD python3 -c "import requests; import sys; rc = 0 if requests.get('http://localhost:${PUPPETBOARD_PORT}${PUPPETBOARD_URL_PREFIX:-}${PUPPETBOARD_STATUS_ENDPOINT}').ok else 255; sys.exit(rc)"
-
 RUN apk add --no-cache gcc libmemcached-dev libc-dev zlib-dev
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app/
