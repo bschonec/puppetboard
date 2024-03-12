@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+FROM ghcr.io/bschonec/puppetboard:latest
 
 LABEL org.label-schema.maintainer="Voxpupuli Team <info@voxpupuli.org>" \
       org.label-schema.vendor="Voxpupuli" \
