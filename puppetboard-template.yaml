@@ -21,6 +21,108 @@ metadata:
   name: puppetboard-template
   namespace: schoneckerb-junk
 objects:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    namespace: schoneckerb-junk
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: "${PUPPETBOARD_SERVICE_NAME}:latest"
+    runPolicy: Serial
+    source:
+      git:
+        uri: https://github.com/voxpupuli/puppetboard.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: python:3.12-alpine
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: QWAtBu3UnE5j8bHL8L1N
+      type: GitHub
+    - generic:
+        secret: q2Wf0ftyxh41hmxPnvNh
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+      buildconfig: ${PUPPETBOARD_SERVICE_NAME}
+      openshift.io/build-config.name: ${PUPPETBOARD_SERVICE_NAME}
+      openshift.io/build.start-policy: Serial
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    namespace: schoneckerb-junk
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-q4wxs
+      to:
+        kind: ImageStreamTag
+        name: "${PUPPETBOARD_SERVICE_NAME}:latest"
+    serviceAccount: builder
+    source:
+      git:
+        uri: https://github.com/voxpupuli/puppetboard.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: python@sha256:849ed6079c9f797ca9c1b7d6aea1c00aea3ac35110cbd0d6003f15950017ea8d
+      type: Docker
+    triggeredBy:
+    - message: Build configuration change
+
+
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    namespace: schoneckerb-junk
+    ipFamilyPolicy: SingleStack
+  spec:
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: "${PUPPETBOARD_PORT}-tcp"
+      port: 80
+      protocol: TCP
+      targetPort: ${{PUPPETBOARD_PORT}}
+    selector:
+      deployment: ${PUPPETBOARD_SERVICE_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -86,6 +188,28 @@ objects:
 #       ports:
 #       - containerPort: 6379
 #         protocol: TCP
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    namespace: schoneckerb-junk
+  spec:
+    host: "${PUPPETBOARD_SERVICE_NAME}-schoneckerb-junk.apps.non-prod.nfii.com"
+    port:
+      targetPort: "${PUPPETBOARD_PORT}-tcp"
+    to:
+      kind: Service
+      name: ${PUPPETBOARD_SERVICE_NAME}
+      weight: 100
+    wildcardPolicy: None
+
+
+
+
 parameters:
 - description: The name of the OpenShift Service exposed for Puppetboard.
   displayName: Puppetboard Service Name
@@ -115,6 +239,7 @@ parameters:
   displayName: Puppetboard Port
   name: PUPPETBOARD_PORT
   required: true
+  value: "1024"
   type: integer
 - description: The remote port on the PuppetDB server where Postgresql is listening.
   displayName: Remote PuppetDB port
