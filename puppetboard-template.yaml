@@ -56,7 +56,7 @@ objects:
             value: ${PUPPETDB_PORT}
           - name: PUPPETBOARD_PORT
             value: ${PUPPETBOARD_PORT}
-          - name: PUPPETBOARD_SECRET_KEY
+          - name: SECRET_KEY
             value: ${PUPPETBOARD_SECRET_KEY}
           image: ghcr.io/voxpupuli/puppetboard@sha256:c9202d6eb90b298d7233b9c4d26f7656e68d58abc93221e2aee75fcb68a69926
           imagePullPolicy: IfNotPresent
