@@ -88,13 +88,13 @@ objects:
 
 - apiVersion: v1
   kind: Service
-#  metadata:
-#    annotations:
-#      openshift.io/generated-by: OpenShiftNewApp
-#    labels:
-#      app: ${PUPPETBOARD_SERVICE_NAME}
-#      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
-#      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
     name: ${PUPPETBOARD_SERVICE_NAME}
     namespace: schoneckerb-junk
     ipFamilyPolicy: SingleStack
@@ -239,7 +239,7 @@ parameters:
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/bschonec/puppetboard-github.git
+  value: https://github.com/bschonec/puppetboard.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
   name: PUPPETBOARD_SOURCE_REPOSITORY_REF
