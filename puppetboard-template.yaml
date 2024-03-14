@@ -239,7 +239,7 @@ parameters:
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/bschonec/puppet-puppetboard.git
+  value: https://github.com/bschonec/puppetboard-github.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
   name: PUPPETBOARD_SOURCE_REPOSITORY_REF
