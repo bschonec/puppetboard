@@ -213,10 +213,6 @@ parameters:
   name: PUPPETBOARD_SECRET_KEY
   required: true
   value: Secr3t_K3y
-- description: The name of the OpenShift Service exposed for Puppetboard.
-  displayName: Puppetboard Service Name
-  name: PUPPETBOARD_SERVICE_NAME
-  required: true
   value: puppetboard
 - description: The port on which the Puppetboard server offers up the web interface.
   displayName: Puppetboard Port
@@ -230,11 +226,6 @@ parameters:
   required: true
   type: integer
   value: "8080"
-- description: The name of the OpenShift Service exposed for Puppetboard.
-  displayName: Puppetboard Service Name
-  name: PUPPETBOARD_SERVICE_NAME
-  required: true
-  value: puppetboard
 - description: The URL of the repository with the Puppetboard application code.
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
