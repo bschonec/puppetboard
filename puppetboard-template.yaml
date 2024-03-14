@@ -12,12 +12,6 @@ message: |-
 
   For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/mysql-container/blob/master/8.0/root/usr/share/container-scripts/mysql/README.md.
 metadata:
-  annotations:
-    description: Description
-    iconClass: icon-puppetboard
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"template.openshift.io/v1","kind":"Template","labels":{"puppetboard":"master"},"message":"The following service(s) have been created in your project: ${DATABASE_SERVICE_NAME}.\n\n   PuppetDB Host: ${PUPPETDB_HOST}\n   PuppetDB Port: ${PUPPETDB_PORT}\n      Secret Key: ${PUPPETBOARD_SECRET_KEY}\nPuppetboard Port: ${PUPPETBOARD_PORT}\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/sclorg/mysql-container/blob/master/8.0/root/usr/share/container-scripts/mysql/README.md.","metadata":{"annotations":{"description":"Description","iconClass":"icon-puppetboard","tags":"database,nosql"},"creationTimestamp":"2024-03-13T12:16:49Z","name":"puppetboard-template","namespace":"schoneckerb-junk","resourceVersion":"1850559501","uid":"b2229e3a-68e3-48bc-8b82-cd4cd933eddb"},"objects":[{"apiVersion":"v1","kind":"Pod","metadata":{"name":"puppetboard-master"},"spec":{"containers":[{"env":[{"name":"REDIS_PASSWORD","value":"${REDIS_PASSWORD}"}],"image":"dockerfile/puppetboard","name":"master","ports":[{"containerPort":6379,"protocol":"TCP"}]}]}}],"parameters":[{"description":"The name of the OpenShift Service exposed for Puppetboard.","displayName":"Puppetboard Service Name","name":"PUPPETBOARD_SERVICE_NAME","required":true,"value":"puppetboard"},{"description":"Remote server where PuppetDB is running.","displayName":"PuppetDB Remote Server","from":"[a-zA-Z0-9]","generate":"expression","name":"PUPPETDB_HOST","required":true,"value":"puppetdb"},{"description":"Secret Key for the Puppetboard.","displayName":"Puppetboard Secret Key","from":"[a-zA-Z0-9]","generate":"expression","name":"PUPPETBOARD_SECRET_KEY","required":true,"value":"Secr3t_K3y"},{"description":"The name of the OpenShift Service exposed for Puppetboard.","displayName":"Puppetboard Service Name","name":"PUPPETBOARD_SERVICE_NAME","required":true,"value":"puppetboard"},{"description":"The port on which the Puppetboard server offers up the web interface.","displayName":"Puppetboard Port","name":"PUPPETBOARD_PORT","required":true,"value":"1024"},{"description":"The remote port on the PuppetDB server where Postgresql is listening.","displayName":"Remote PuppetDB port","name":"PUPPETDB_PORT","required":true,"value":"8080"},{"description":"The name of the OpenShift Service exposed for Puppetboard.","displayName":"Puppetboard Service Name","name":"PUPPETBOARD_SERVICE_NAME","required":true,"value":"puppetboard"},{"description":"The URL of the repository with the Puppetboard application code.","displayName":"Puppetboard Repository URL","name":"PUPPETBOARD_SOURCE_REPOSITORY_URL","required":true,"value":"https://github.com/voxpupuli/puppet-puppetboard.git"},{"description":"The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.","displayName":"Puppetboard Repository Ref","name":"PUPPETBOARD_SOURCE_REPOISOTRY_REF","required":true,"value":"master"}]}
-    tags: database,nosql
   name: puppetboard-template
   namespace: schoneckerb-junk
 objects:
@@ -28,6 +22,7 @@ objects:
       app: ${PUPPETBOARD_SERVICE_NAME}
       app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
       app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+      ${PUPPETBOARD_SERVICE_NAME}: master
     name: ${PUPPETBOARD_SERVICE_NAME}
     namespace: schoneckerb-junk
   spec:
@@ -40,21 +35,17 @@ objects:
     runPolicy: Serial
     source:
       git:
-        uri: https://github.com/voxpupuli/puppetboard.git
+        ref: ${PUPPETBOARD_SOURCE_REPOSITORY_REF}
+        uri: ${PUPPETBOARD_SOURCE_REPOSITORY_URL}
       type: Git
     strategy:
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: python:3.12-alpine
       type: Docker
-    successfulBuildsHistoryLimit: 5
     triggers:
     - github:
-        secret: QWAtBu3UnE5j8bHL8L1N
+        secret: PGimRE6RXjtmZqfSwg5S
       type: GitHub
     - generic:
-        secret: q2Wf0ftyxh41hmxPnvNh
+        secret: Z--mBtImZjQqNoxmkzOq
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -82,7 +73,7 @@ objects:
     serviceAccount: builder
     source:
       git:
-        uri: https://github.com/voxpupuli/puppetboard.git
+        uri: ${PUPPETBOARD_SOURCE_REPOSITORY_URL}
       type: Git
     strategy:
       dockerStrategy:
@@ -97,13 +88,13 @@ objects:
 
 - apiVersion: v1
   kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    labels:
-      app: ${PUPPETBOARD_SERVICE_NAME}
-      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
-      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
+#  metadata:
+#    annotations:
+#      openshift.io/generated-by: OpenShiftNewApp
+#    labels:
+#      app: ${PUPPETBOARD_SERVICE_NAME}
+#      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+#      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME}
     name: ${PUPPETBOARD_SERVICE_NAME}
     namespace: schoneckerb-junk
     ipFamilyPolicy: SingleStack
@@ -121,15 +112,18 @@ objects:
       deployment: ${PUPPETBOARD_SERVICE_NAME}
     sessionAffinity: None
     type: ClusterIP
-  status:
-    loadBalancer: {}
+
+
+
+
+
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
       app: ${PUPPETBOARD_SERVICE_NAME}
-      app.kubernetes.io/component: puppetboard
-      app.kubernetes.io/instance: puppetboard
+      app.kubernetes.io/component: ${PUPPETBOARD_SERVICE_NAME}
+      app.kubernetes.io/instance: ${PUPPETBOARD_SERVICE_NAME} 
     name: ${PUPPETBOARD_SERVICE_NAME}
     namespace: schoneckerb-junk
   spec:
@@ -160,7 +154,8 @@ objects:
             value: ${PUPPETBOARD_PORT}
           - name: SECRET_KEY
             value: ${PUPPETBOARD_SECRET_KEY}
-          image: ghcr.io/voxpupuli/puppetboard@sha256:c9202d6eb90b298d7233b9c4d26f7656e68d58abc93221e2aee75fcb68a69926
+          #image: ghcr.io/voxpupuli/puppetboard@sha256:c9202d6eb90b298d7233b9c4d26f7656e68d58abc93221e2aee75fcb68a69926
+          image: ' '
           imagePullPolicy: IfNotPresent
           name: ${PUPPETBOARD_SERVICE_NAME}
           ports:
@@ -174,20 +169,8 @@ objects:
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
-# - apiVersion: v1
-#   kind: Pod
-#   metadata:
-#     name: puppetboard-master
-#   spec:
-#     containers:
-#     - env:
-#       - name: REDIS_PASSWORD
-#         value: ${REDIS_PASSWORD}
-#       image: dockerfile/puppetboard
-#       name: master
-#       ports:
-#       - containerPort: 6379
-#         protocol: TCP
+
+
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -256,9 +239,9 @@ parameters:
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/voxpupuli/puppet-puppetboard.git
+  value: https://github.com/bschonec/puppet-puppetboard.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
-  name: PUPPETBOARD_SOURCE_REPOISOTRY_REF
+  name: PUPPETBOARD_SOURCE_REPOSITORY_REF
   required: true
-  value: master
+  value: templates 

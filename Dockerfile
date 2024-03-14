@@ -1,4 +1,4 @@
-FROM ghcr.io/voxpupuli/puppetboard
+FROM ghcr.io/bschonec/puppetboard
 
 LABEL org.label-schema.maintainer="Voxpupuli Team <info@voxpupuli.org>" \
       org.label-schema.vendor="Voxpupuli" \
