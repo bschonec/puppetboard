@@ -1,0 +1,164 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: puppetboard-template
+objects:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    annotations:
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+    name: ${PUPPETBOARD_SERVICE_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+- kind: "BuildConfig"
+  apiVersion: build.openshift.io/v1
+  metadata:
+    name: "${PUPPETBOARD_SERVICE_NAME}" 
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+  spec:
+    runPolicy: "Serial" 
+    triggers: 
+      -
+        type: "GitHub"
+        github:
+          secret: "secret101"
+      - type: "Generic"
+        generic:
+          secret: "secret101"
+      -
+        type: "ImageChange"
+    source: 
+      git:
+        uri: ${PUPPETBOARD_SOURCE_REPOSITORY_URL}
+        ref: ${PUPPETBOARD_SOURCE_REPOSITORY_REF}
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: Dockerfile    
+    output: 
+      to:
+        kind: "ImageStreamTag"
+        name: "${PUPPETBOARD_SERVICE_NAME}:latest"
+- kind: "DeploymentConfig"
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${PUPPETBOARD_SERVICE_NAME}"
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+  spec:
+    template: 
+      metadata:
+        labels:
+          name: "${PUPPETBOARD_SERVICE_NAME}"
+          app: ${PUPPETBOARD_SERVICE_NAME}
+      spec:
+        containers:
+          - name: "${PUPPETBOARD_SERVICE_NAME}"
+            imagePullPolicy: Always
+            ports:
+              - containerPort: ${{PUPPETBOARD_PORT}}
+                protocol: "TCP"
+            env:
+              - name: RUN_ENV
+                value: OpenShift-With-Dockerfile 
+        restartPolicy: Always
+    replicas: 1 
+    triggers:
+      - type: "ConfigChange" 
+      - type: "ImageChange" 
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - "${PUPPETBOARD_SERVICE_NAME}"
+          from:
+            kind: "ImageStreamTag"
+            name: "${PUPPETBOARD_SERVICE_NAME}:latest"
+    strategy: 
+      type: "Rolling"
+    paused: false 
+    revisionHistoryLimit: 2 
+    minReadySeconds: 0 
+- kind: Service
+  apiVersion: v1
+  metadata:
+    annotations:
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+  spec:
+    ports:
+    - name: "${PUPPETBOARD_PORT}-tcp"
+      protocol: TCP
+      port: 80
+      targetPort: ${{PUPPETBOARD_PORT}}
+    selector:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+    type: ClusterIP
+    sessionAffinity: None
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: ${PUPPETBOARD_SERVICE_NAME}
+    labels:
+      app: ${PUPPETBOARD_SERVICE_NAME}
+    annotations:
+  spec:
+    to:
+      kind: Service
+      name: ${PUPPETBOARD_SERVICE_NAME}
+      weight: 100
+    port:
+      targetPort: "${PUPPETBOARD_PORT}-tcp"
+  wildcardPolicy: None  
+
+
+
+
+
+
+parameters:
+- description: The name of the OpenShift Service exposed for Puppetboard.
+  displayName: Puppetboard Service Name
+  name: PUPPETBOARD_SERVICE_NAME
+  required: true
+  value: puppetboard 
+- description: Remote server where PuppetDB is running.
+  displayName: PuppetDB Remote Server
+  from: '[a-zA-Z0-9]'
+  generate: expression
+  name: PUPPETDB_HOST
+  required: true
+  value: puppetdb
+- description: The remote port on the PuppetDB server where Postgresql is listening.
+  displayName: Remote PuppetDB port
+  name: PUPPETDB_PORT
+  required: true
+  type: integer
+  value: "8080"
+- description: Secret Key for the Puppetboard.
+  displayName: Puppetboard Secret Key
+  from: '[a-zA-Z0-9]'
+  generate: expression
+  name: PUPPETBOARD_SECRET_KEY
+  required: true
+  value: Secr3t_K3y
+- description: The port on which the Puppetboard server offers up the web interface.
+  displayName: Puppetboard Port
+  name: PUPPETBOARD_PORT
+  required: true
+  value: "1024"
+  type: integer
+- description: The URL of the repository with the Puppetboard application code.
+  displayName: Puppetboard Repository URL
+  name: PUPPETBOARD_SOURCE_REPOSITORY_URL
+  required: true
+  value: https://github.com/bschonec/puppetboard.git
+- description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
+  displayName: Puppetboard Repository Ref
+  name: PUPPETBOARD_SOURCE_REPOSITORY_REF
+  required: true
+  value: templates 
