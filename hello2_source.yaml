@@ -70,8 +70,14 @@ objects:
               - containerPort: 8080
                 protocol: "TCP"
             env:
-              - name: RUN_ENV
-                value: OpenShift-With-SourceStrategy 
+              - name: PUPPETDB_HOST
+                value: ${PUPPETDB_HOST}
+              - name: PUPPETDB_PORT
+                value: "${PUPPETDB_PORT}"
+              - name: SECRET_KEY
+                value: ${PUPPETBOARD_SECRET_KEY}
+              - name: PUPPETBOARD_PORT
+                value: "${PUPPETBOARD_PORT}"
         restartPolicy: Always
     replicas: 1 
     triggers:
@@ -129,6 +135,9 @@ parameters:
   name: PUPPETBOARD_SERVICE_NAME
   required: true
   value: puppetboard 
+# These values are passed to the Docker container.  They are not
+# used in the building of the OpenShift app.  They are passed via environment
+# variables in the DeploymentConfig section above.
 - description: Remote server where PuppetDB is running.
   displayName: PuppetDB Remote Server
   from: '[a-zA-Z0-9]'
