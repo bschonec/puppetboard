@@ -17,9 +17,12 @@ objects:
   apiVersion: build.openshift.io/v1
   metadata:
     name: "${PUPPETBOARD_SERVICE_NAME}" 
+    generation: 2
     labels:
       app: ${PUPPETBOARD_SERVICE_NAME}
   spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
     runPolicy: "Serial" 
     triggers: 
       - type: "GitHub"
@@ -28,21 +31,27 @@ objects:
       - type: "Generic"
         generic:
           secret: "secret101"
+      - type: "ConfigChange"
       - type: "ImageChange"
+        imageChange: {}
     source: 
       git:
         uri: ${PUPPETBOARD_SOURCE_REPOSITORY_URL}
         ref: ${PUPPETBOARD_SOURCE_REPOSITORY_REF}
-    strategy:
+      type: Git
+    strategy: 
+      dockerStragegy:
+        from:
+          kind: "ImageStreamTag"
+          name: python:3.12-alpine
       type: Docker
-      dockerStrategy:
-        dockerfilePath: Dockerfile    
     output: 
       to:
         kind: "ImageStreamTag"
         name: "${PUPPETBOARD_SERVICE_NAME}:latest"
+    successfulBuildsHistoryLimit: 5
 - kind: "DeploymentConfig"
-  apiVersion: apps.openshift.io/v1
+  apiVersion: "v1"
   metadata:
     name: "${PUPPETBOARD_SERVICE_NAME}"
     labels:
@@ -58,11 +67,11 @@ objects:
           - name: "${PUPPETBOARD_SERVICE_NAME}"
             imagePullPolicy: Always
             ports:
-              - containerPort: ${{PUPPETBOARD_PORT}}
+              - containerPort: 8080
                 protocol: "TCP"
             env:
               - name: RUN_ENV
-                value: OpenShift-With-Dockerfile 
+                value: OpenShift-With-SourceStrategy 
         restartPolicy: Always
     replicas: 1 
     triggers:
@@ -89,10 +98,11 @@ objects:
       app: ${PUPPETBOARD_SERVICE_NAME}
   spec:
     ports:
-    - name: "${PUPPETBOARD_PORT}-tcp"
+    # TODO:  This is kinda confusing.
+    - name: '80-tcp' 
       protocol: TCP
       port: 80
-      targetPort: ${{PUPPETBOARD_PORT}}
+      targetPort: "${PUPPETBOARD_PORT}-tcp"
     selector:
       app: ${PUPPETBOARD_SERVICE_NAME}
     type: ClusterIP
@@ -112,11 +122,6 @@ objects:
     port:
       targetPort: "${PUPPETBOARD_PORT}-tcp"
   wildcardPolicy: None  
-
-
-
-
-
 
 parameters:
 - description: The name of the OpenShift Service exposed for Puppetboard.
