@@ -132,12 +132,11 @@ parameters:
 - description: Remote server where PuppetDB is running.
   displayName: PuppetDB Remote Server
   from: '[a-zA-Z0-9]'
-  generate: expression
   name: PUPPETDB_HOST
   required: true
   value: puppetdb
 - description: The remote port on the PuppetDB server where Postgresql is listening.
-  displayName: Remote PuppetDB port
+  displayName: PuppetDB port 
   name: PUPPETDB_PORT
   required: true
   type: integer
@@ -145,7 +144,6 @@ parameters:
 - description: Secret Key for the Puppetboard.
   displayName: Puppetboard Secret Key
   from: '[a-zA-Z0-9]'
-  generate: expression
   name: PUPPETBOARD_SECRET_KEY
   required: true
   value: Secr3t_K3y
@@ -156,7 +154,7 @@ parameters:
   value: "1024"
   type: integer
 - description: The port on which OpenShift offerse the Puppetboard service.
-  displayName: Service Port
+  displayName: OpenShift Service Port
   name: SERVICE_PORT
   required: true
   value: "80"
