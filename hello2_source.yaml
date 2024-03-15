@@ -99,10 +99,10 @@ objects:
   spec:
     ports:
     # TODO:  This is kinda confusing.
-    - name: '80-tcp' 
+    - name: "${SERVICE_PORT}-tcp"
       protocol: TCP
       port: 80
-      targetPort: "${PUPPETBOARD_PORT}-tcp"
+      targetPort: ${{PUPPETBOARD_PORT}}
     selector:
       app: ${PUPPETBOARD_SERVICE_NAME}
     type: ClusterIP
@@ -120,7 +120,7 @@ objects:
       name: ${PUPPETBOARD_SERVICE_NAME}
       weight: 100
     port:
-      targetPort: "${PUPPETBOARD_PORT}-tcp"
+      targetPort: "${SERVICE_PORT}-tcp"
   wildcardPolicy: None  
 
 parameters:
@@ -155,13 +155,19 @@ parameters:
   required: true
   value: "1024"
   type: integer
+- description: The port on which OpenShift offerse the Puppetboard service.
+  displayName: Service Port
+  name: SERVICE_PORT
+  required: true
+  value: "80"
+  type: integer
 - description: The URL of the repository with the Puppetboard application code.
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/bschonec/puppetboard.git
+  value: https://github.com/voxpupuli/puppetboard.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
   name: PUPPETBOARD_SOURCE_REPOSITORY_REF
   required: true
-  value: templates 
+  value: master 
