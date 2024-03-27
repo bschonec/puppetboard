@@ -162,7 +162,7 @@ parameters:
   required: true
   value: "1024"
   type: integer
-- description: The port on which OpenShift offerse the Puppetboard service.
+- description: The port on which OpenShift offers the Puppetboard service.
   displayName: OpenShift Service Port
   name: SERVICE_PORT
   required: true
@@ -172,10 +172,9 @@ parameters:
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/bschonec/puppetboard.git
-  #value: https://github.com/voxpupuli/puppetboard.git
+  value: https://github.com/voxpupuli/puppetboard.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
   name: PUPPETBOARD_SOURCE_REPOSITORY_REF
   required: true
-  value: "v5.0.0"
+  value: "master"
