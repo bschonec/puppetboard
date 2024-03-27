@@ -441,3 +441,8 @@ downloaded from the [Noun Project](https://thenounproject.com).
 
 
 PUPPETDB_HOST = this is the host that the puppetboard docker container will query for Postgresql.
+PUPPETBOARD_PORT  = the port on which the puppetboard docker container offsers up the web interface.
+
+
+
+

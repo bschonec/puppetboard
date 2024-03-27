@@ -67,7 +67,7 @@ objects:
           - name: "${PUPPETBOARD_SERVICE_NAME}"
             imagePullPolicy: Always
             ports:
-              - containerPort: 8080
+              - containerPort: ${{PUPPETDB_PORT}}
                 protocol: "TCP"
             env:
               - name: PUPPETDB_HOST
@@ -172,9 +172,10 @@ parameters:
   displayName: Puppetboard Repository URL
   name: PUPPETBOARD_SOURCE_REPOSITORY_URL
   required: true
-  value: https://github.com/voxpupuli/puppetboard.git
+  value: https://github.com/bschonec/puppetboard.git
+  #value: https://github.com/voxpupuli/puppetboard.git
 - description: The branch name, tag or other ref of the PUPPETBOARD_SOURCE_REPOSITORY_URL.
   displayName: Puppetboard Repository Ref
   name: PUPPETBOARD_SOURCE_REPOSITORY_REF
   required: true
-  value: master 
+  value: "v5.0.0"
