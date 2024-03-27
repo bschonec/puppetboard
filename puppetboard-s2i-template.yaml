@@ -107,7 +107,7 @@ objects:
     # TODO:  This is kinda confusing.
     - name: "${SERVICE_PORT}-tcp"
       protocol: TCP
-      port: 80
+      port: ${{SERVICE_PORT}}
       targetPort: ${{PUPPETBOARD_PORT}}
     selector:
       app: ${PUPPETBOARD_SERVICE_NAME}

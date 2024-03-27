@@ -436,3 +436,8 @@ downloaded from the [Noun Project](https://thenounproject.com).
  1006  oc delete project schoneckerb-junk && oc new-project schoneckerb-junk  && oc create -f puppetboard-s2i-template.yaml 
  1007  oc new-app --template=puppetboard-template -p PUPPETDB_HOST=nfiv-puppdb-02p.nfii.com -p PUPPETBOARD_PORT=4321 -p PUPPETBOARD_SOURCE_REPOSITORY_REF=templates -p PUPPETBOARD_SOURCE_REPOSITORY_URL=https://github.com/bschonec/puppetboard.git
  1008  history >> README.md 
+
+
+
+
+PUPPETDB_HOST = this is the host that the puppetboard docker container will query for Postgresql.
