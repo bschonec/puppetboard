@@ -158,6 +158,12 @@ parameters:
   name: PUPPETBOARD_SECRET_KEY
   required: true
   value: Secr3t_K3y
+- description: The amount of hours after which Puppetboard will display the node as unreported if it hasn't checked in.
+  displayName: Puppetboard UNRESPONSIVE_HOURS
+  name: UNRESPONSIVE_HOURS
+  required: true
+  value: "1024"
+  type: integer
 - description: The port on which the Puppetboard server offers up the web interface.
   displayName: Puppetboard Port
   name: PUPPETBOARD_PORT
