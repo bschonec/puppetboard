@@ -184,5 +184,5 @@ parameters:
   displayName: Puppetboard UNRESPONSIVE_HOURS
   name: UNRESPONSIVE_HOURS
   required: true
-  value: "2"
+  value: "69"
   type: integer
