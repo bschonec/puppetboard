@@ -144,18 +144,16 @@ objects:
                 value: ${SCHEDULER_ENABLED}
               - name: SCHEDULER_JOBS
                 value: ${SCHEDULER_JOBS}
-
-
               - name: PUPPETDB_HOST
                 value: ${PUPPETDB_HOST}
               - name: PUPPETDB_PORT
-                value: "${PUPPETDB_PORT}"
+                value: ${PUPPETDB_PORT}
               - name: SECRET_KEY
                 value: ${PUPPETBOARD_SECRET_KEY}
               - name: PUPPETBOARD_PORT
-                value: "${PUPPETBOARD_PORT}"
+                value: ${PUPPETBOARD_PORT}
               - name: UNRESPONSIVE_HOURS
-                value: "${UNRESPONSIVE_HOURS}"
+                value: ${UNRESPONSIVE_HOURS}
         restartPolicy: Always
     replicas: 3 
     triggers:
