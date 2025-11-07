@@ -70,7 +70,6 @@ objects:
               - containerPort: ${{PUPPETDB_PORT}}
                 protocol: "TCP"
             env:
-
               - name: PUPPETBOARD_URL_PREFIX
                 value: ${PUPPETBOARD_URL_PREFIX}
               - name: PUPPETDB_SSL_VERIFY
@@ -239,6 +238,11 @@ parameters:
   required: true
   value: "1024"
   type: integer
+
+
+
+
+
 - description: The port on which OpenShift offers the Puppetboard service.
   displayName: OpenShift Service Port
   name: SERVICE_PORT
