@@ -78,6 +78,42 @@ objects:
                 value: ${PUPPETBOARD_SECRET_KEY}
               - name: PUPPETBOARD_PORT
                 value: "${PUPPETBOARD_PORT}"
+
+
+
+
+
+              - name: SCHEDULER_ENABLED
+                value: ${SCHEDULER_ENABLED}
+              - name: SCHEDULER_JOBS
+                value: ${SCHEDULER_JOBS}
+              - name: PUPPETDB_HOST
+                value: ${PUPPETDB_HOST}
+              - name: PUPPETDB_PORT
+                value: "${PUPPETDB_PORT}"
+              - name: SECRET_KEY
+                value: ${PUPPETBOARD_SECRET_KEY}
+              - name: PUPPETBOARD_PORT
+                value: "${PUPPETBOARD_PORT}"
+              - name: UNRESPONSIVE_HOURS
+                value: "${UNRESPONSIVE_HOURS}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         restartPolicy: Always
     replicas: 3 
     triggers:
@@ -186,3 +222,11 @@ parameters:
   required: true
   value: "2"
   type: integer
+- description: If set to `True` then a scheduler instance is created in order to execute scheduled jobs.
+  displayName: SCHEDULER_ENABLED
+  name: SCHEDULER_ENABLED
+  type: boolean
+- description: List of the scheduled jobs to trigger within a worker.
+  displayName: SCHEDULER_JOBS
+  name: SCHEDULER_JOBS
+  type: string
