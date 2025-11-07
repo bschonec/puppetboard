@@ -70,6 +70,16 @@ objects:
               - containerPort: ${{PUPPETDB_PORT}}
                 protocol: "TCP"
             env:
+              - name: PUPPETDB_HOST
+                value: ${PUPPETDB_HOST}
+              - name: PUPPETDB_PORT
+                value: ${PUPPETDB_PORT}
+              - name: SECRET_KEY
+                value: ${PUPPETBOARD_SECRET_KEY}
+              - name: PUPPETBOARD_PORT
+                value: ${PUPPETBOARD_PORT}
+
+
               - name: PUPPETBOARD_URL_PREFIX
                 value: ${PUPPETBOARD_URL_PREFIX}
               - name: PUPPETDB_SSL_VERIFY
@@ -144,14 +154,9 @@ objects:
                 value: ${SCHEDULER_ENABLED}
               - name: SCHEDULER_JOBS
                 value: ${SCHEDULER_JOBS}
-              - name: PUPPETDB_HOST
-                value: ${PUPPETDB_HOST}
-              - name: PUPPETDB_PORT
-                value: ${PUPPETDB_PORT}
-              - name: SECRET_KEY
-                value: ${PUPPETBOARD_SECRET_KEY}
-              - name: PUPPETBOARD_PORT
-                value: ${PUPPETBOARD_PORT}
+
+
+
         restartPolicy: Always
     replicas: 3 
     triggers:
@@ -223,7 +228,7 @@ parameters:
 - description: The remote port on the PuppetDB server where Postgresql is listening.
   displayName: PuppetDB port 
   name: PUPPETDB_PORT
-  required: false
+  required: true
   type: integer
   value: "8080"
 - description: Secret Key for the Puppetboard.
@@ -264,7 +269,7 @@ parameters:
   displayName: CACHE_DEFAULT_TIMEOUT
   name: CACHE_DEFAULT_TIMEOUT
   type: integer
-- description: 
+- description: Cashed memcached servers
   displayName: CACHE_MEMCACHED_SERVERS
   name: CACHE_MEMCACHED_SERVERS
 - description: Specifies which type of caching object to use when `SCHEDULER_ENABLED` is set to `True`.
