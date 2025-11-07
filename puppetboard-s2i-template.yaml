@@ -70,14 +70,89 @@ objects:
               - containerPort: ${{PUPPETDB_PORT}}
                 protocol: "TCP"
             env:
+
+              - name: PUPPETBOARD_URL_PREFIX
+                value: ${PUPPETBOARD_URL_PREFIX}
+              - name: PUPPETDB_SSL_VERIFY
+                value: ${PUPPETDB_SSL_VERIFY}
+              - name: PUPPETDB_KEY
+                value: ${PUPPETDB_KEY}
+              - name: PUPPETDB_CERT
+                value: ${PUPPETDB_CERT}
+              - name: PUPPETDB_PROTO
+                value: ${PUPPETDB_PROTO}
+              - name: PUPPETDB_TIMEOUT
+                value: ${PUPPETDB_TIMEOUT}
+              - name: DEFAULT_ENVIRONMENT
+                value: ${DEFAULT_ENVIRONMENT}
+              - name: ENABLED_QUERY_ENDPOINTS
+                value: ${ENABLED_QUERY_ENDPOINTS}
+              - name: ENABLE_QUERY
+                value: ${ENABLE_QUERY}
+              - name: LOCALISE_TIMESTAMP
+                value: ${LOCALISE_TIMESTAMP}
+              - name: LOGLEVEL
+                value: ${LOGLEVEL}
+              - name: REPORTS_COUNT
+                value: ${REPORTS_COUNT}
+              - name: LITTLE_TABLE_COUNT
+                value: ${LITTLE_TABLE_COUNT}
+              - name: TABLE_COUNT_SELECTOR
+                value: ${TABLE_COUNT_SELECTOR}
+              - name: DISPLAYED_METRICS
+                value: ${DISPLAYED_METRICS}
+              - name: OFFLINE_MODE
+                value: ${OFFLINE_MODE}
+              - name: ENABLE_CATALOG
+                value: ${ENABLE_CATALOG}
+              - name: OVERVIEW_FILTER
+                value: ${OVERVIEW_FILTER}
+              - name: PAGE_TITLE
+                value: ${PAGE_TITLE}
+              - name: GRAPH_FACTS
+                value: ${GRAPH_FACTS}
+              - name: GRAPH_TYPE
+                value: ${GRAPH_TYPE}
+              - name: INVENTORY_FACTS
+                value: ${INVENTORY_FACTS}
+              - name: INVENTORY_FACT_TEMPLATES
+                value: ${INVENTORY_FACT_TEMPLATES}
+              - name: REFRESH_RATE
+                value: ${REFRESH_RATE}
+              - name: DAILY_REPORTS_CHART_ENABLED
+                value: ${DAILY_REPORTS_CHART_ENABLED}
+              - name: DAILY_REPORTS_CHART_DAYS
+                value: ${DAILY_REPORTS_CHART_DAYS}
+              - name: WITH_EVENT_NUMBERS
+                value: ${WITH_EVENT_NUMBERS}
+              - name: SHOW_ERROR_AS
+                value: ${SHOW_ERROR_AS}
+              - name: CODE_PREFIX_TO_REMOVE
+                value: ${CODE_PREFIX_TO_REMOVE}
+              - name: FAVORITE_ENVS
+                value: ${FAVORITE_ENVS}
+              - name: ENABLE_CLASS
+                value: ${ENABLE_CLASS}
+              - name: CACHE_DEFAULT_TIMEOUT
+                value: ${CACHE_DEFAULT_TIMEOUT}
+              - name: CACHE_TYPE
+                value: ${CACHE_TYPE}
+              - name: CACHE_MEMCACHED_SERVERS
+                value: ${CACHE_MEMCACHED_SERVERS}
+              - name: CLASS_EVENTS_STATUS_COLUMNS
+                value: ${CLASS_EVENTS_STATUS_COLUMNS}
+              - name: SCHEDULER_ENABLED
+                value: ${SCHEDULER_ENABLED}
+              - name: SCHEDULER_JOBS
+                value: ${SCHEDULER_JOBS}
               - name: PUPPETDB_HOST
                 value: ${PUPPETDB_HOST}
               - name: PUPPETDB_PORT
-                value: "${PUPPETDB_PORT}"
+                value: ${PUPPETDB_PORT}
               - name: SECRET_KEY
                 value: ${PUPPETBOARD_SECRET_KEY}
               - name: PUPPETBOARD_PORT
-                value: "${PUPPETBOARD_PORT}"
+                value: ${PUPPETBOARD_PORT}
         restartPolicy: Always
     replicas: 3 
     triggers:
