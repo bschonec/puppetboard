@@ -70,6 +70,8 @@ objects:
               - containerPort: ${{PUPPETDB_PORT}}
                 protocol: "TCP"
             env:
+              - name: DEFAULT_ENVIRONMENT
+                value: ${DEFAULT_ENVIRONMENT}
               - name: PUPPETDB_HOST
                 value: ${PUPPETDB_HOST}
               - name: PUPPETDB_PORT
@@ -188,3 +190,11 @@ parameters:
   required: true
   value: "2"
   type: integer
+- description: Cache lifetime in seconds
+  displayName: CACHE_DEFAULT_TIMEOUT
+  name: CACHE_DEFAULT_TIMEOUT
+  type: integer
+- description: Defaults to `'production'`, as the name suggests, load all information filtered by this
+  displayName: DEFAULT_ENVIRONMENT
+  name: DEFAULT_ENVIRONMENT
+  type: string
