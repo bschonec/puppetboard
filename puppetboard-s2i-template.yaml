@@ -293,7 +293,7 @@ parameters:
   displayName: DEFAULT_ENVIRONMENT
   name: DEFAULT_ENVIRONMENT
   type: string
-- description: Metrics to show when displaying node summary. Example: `'resources.total'`, `'events.noop'`.
+- description: Metrics to show when displaying node summary.
   displayName: DISPLAYED_METRICS
   name: DISPLAYED_METRICS
   type: string
@@ -397,7 +397,7 @@ parameters:
   displayName: SCHEDULER_JOBS
   name: SCHEDULER_JOBS
   type: string
-- description:  `friendly` or `raw`. The former makes Puppet run errors in Report and Failures views shown.
+- description:  Show errors as friendly or raw output.
   displayName: SHOW_ERROR_AS
   name: SHOW_ERROR_AS
   type: string
