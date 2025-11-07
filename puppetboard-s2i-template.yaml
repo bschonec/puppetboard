@@ -149,7 +149,7 @@ parameters:
 - description: The remote port on the PuppetDB server where Postgresql is listening.
   displayName: PuppetDB port 
   name: PUPPETDB_PORT
-  required: true
+  required: false
   type: integer
   value: "8080"
 - description: Secret Key for the Puppetboard.
