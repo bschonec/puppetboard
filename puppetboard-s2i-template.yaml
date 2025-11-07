@@ -78,6 +78,8 @@ objects:
                 value: ${PUPPETBOARD_SECRET_KEY}
               - name: PUPPETBOARD_PORT
                 value: "${PUPPETBOARD_PORT}"
+              - name: UNRESPONSIVE_HOURS
+                value: "${UNRESPONSIVE_HOURS}"
         restartPolicy: Always
     replicas: 3 
     triggers:
