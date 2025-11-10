@@ -84,14 +84,6 @@ objects:
                 value: ${PUPPETBOARD_URL_PREFIX}
               - name: PUPPETDB_SSL_VERIFY
                 value: ${PUPPETDB_SSL_VERIFY}
-              - name: PUPPETDB_KEY
-                value: ${PUPPETDB_KEY}
-              - name: PUPPETDB_CERT
-                value: ${PUPPETDB_CERT}
-              - name: PUPPETDB_PROTO
-                value: ${PUPPETDB_PROTO}
-                ${{ if .Values.PUPPETDB_PROTO }}{{ end }}
-
               - name: PUPPETDB_TIMEOUT
                 value: ${PUPPETDB_TIMEOUT}
               - name: DEFAULT_ENVIRONMENT
@@ -100,65 +92,42 @@ objects:
                 value: ${ENABLED_QUERY_ENDPOINTS}
               - name: ENABLE_QUERY
                 value: ${ENABLE_QUERY}
-#              - name: LOCALISE_TIMESTAMP
-#                value: ${LOCALISE_TIMESTAMP}
-#              - name: LOGLEVEL
-#                value: ${LOGLEVEL}
-#              - name: REPORTS_COUNT
-#                value: ${REPORTS_COUNT}
-#              - name: LITTLE_TABLE_COUNT
-#                value: ${LITTLE_TABLE_COUNT}
-#              - name: TABLE_COUNT_SELECTOR
-#                value: ${TABLE_COUNT_SELECTOR}
-#              - name: DISPLAYED_METRICS
-#                value: ${DISPLAYED_METRICS}
-#              - name: OFFLINE_MODE
-#                value: ${OFFLINE_MODE}
-#              - name: ENABLE_CATALOG
-#                value: ${ENABLE_CATALOG}
-#              - name: OVERVIEW_FILTER
-#                value: ${OVERVIEW_FILTER}
-#              - name: PAGE_TITLE
-#                value: ${PAGE_TITLE}
-#              - name: GRAPH_FACTS
-#                value: ${GRAPH_FACTS}
-#              - name: GRAPH_TYPE
-#                value: ${GRAPH_TYPE}
-#              - name: INVENTORY_FACTS
-#                value: ${INVENTORY_FACTS}
-#              - name: INVENTORY_FACT_TEMPLATES
-#                value: ${INVENTORY_FACT_TEMPLATES}
-#              - name: REFRESH_RATE
-#                value: ${REFRESH_RATE}
-#              - name: DAILY_REPORTS_CHART_ENABLED
-#                value: ${DAILY_REPORTS_CHART_ENABLED}
-#              - name: DAILY_REPORTS_CHART_DAYS
-#                value: ${DAILY_REPORTS_CHART_DAYS}
-#              - name: WITH_EVENT_NUMBERS
-#                value: ${WITH_EVENT_NUMBERS}
-#              - name: SHOW_ERROR_AS
-#                value: ${SHOW_ERROR_AS}
-#              - name: CODE_PREFIX_TO_REMOVE
-#                value: ${CODE_PREFIX_TO_REMOVE}
-#              - name: FAVORITE_ENVS
-#                value: ${FAVORITE_ENVS}
-#              - name: ENABLE_CLASS
-#                value: ${ENABLE_CLASS}
-#              - name: CACHE_DEFAULT_TIMEOUT
-#                value: ${CACHE_DEFAULT_TIMEOUT}
-#              - name: CACHE_TYPE
-#                value: ${CACHE_TYPE}
-#              - name: CACHE_MEMCACHED_SERVERS
-#                value: ${CACHE_MEMCACHED_SERVERS}
-#              - name: CLASS_EVENTS_STATUS_COLUMNS
-#                value: ${CLASS_EVENTS_STATUS_COLUMNS}
-#              - name: SCHEDULER_ENABLED
-#                value: ${SCHEDULER_ENABLED}
-#              - name: SCHEDULER_JOBS
-#                value: ${SCHEDULER_JOBS}
-
-
-
+              - name: LOCALISE_TIMESTAMP
+                value: ${LOCALISE_TIMESTAMP}
+              - name: LOGLEVEL
+                value: ${LOGLEVEL}
+              - name: REPORTS_COUNT
+                value: ${REPORTS_COUNT}
+              - name: LITTLE_TABLE_COUNT
+                value: ${LITTLE_TABLE_COUNT}
+              - name: OFFLINE_MODE
+                value: ${OFFLINE_MODE}
+              - name: ENABLE_CATALOG
+                value: ${ENABLE_CATALOG}
+              - name: PAGE_TITLE
+                value: ${PAGE_TITLE}
+              - name: GRAPH_TYPE
+                value: ${GRAPH_TYPE}
+              - name: REFRESH_RATE
+                value: ${REFRESH_RATE}
+              - name: DAILY_REPORTS_CHART_ENABLED
+                value: ${DAILY_REPORTS_CHART_ENABLED}
+              - name: DAILY_REPORTS_CHART_DAYS
+                value: ${DAILY_REPORTS_CHART_DAYS}
+              - name: WITH_EVENT_NUMBERS
+                value: ${WITH_EVENT_NUMBERS}
+              - name: SHOW_ERROR_AS
+                value: ${SHOW_ERROR_AS}
+              - name: CODE_PREFIX_TO_REMOVE
+                value: ${CODE_PREFIX_TO_REMOVE}
+              - name: ENABLE_CLASS
+                value: ${ENABLE_CLASS}
+              - name: CACHE_DEFAULT_TIMEOUT
+                value: ${CACHE_DEFAULT_TIMEOUT}
+              - name: CACHE_TYPE
+                value: ${CACHE_TYPE}
+              - name: SCHEDULER_ENABLED
+                value: ${SCHEDULER_ENABLED}
         restartPolicy: Always
     replicas: 3 
     triggers:
@@ -238,7 +207,7 @@ parameters:
   type: string
   from: '[a-zA-Z0-9]'
   name: PUPPETBOARD_SECRET_KEY
-  value: Secr3t_K3y
+  value: "Secr3t_K3y"
 - description: The port on which the Puppetboard server offers up the web interface.
   displayName: Puppetboard Port
   name: PUPPETBOARD_PORT
@@ -281,37 +250,32 @@ parameters:
   displayName: CACHE_DEFAULT_TIMEOUT
   name: CACHE_DEFAULT_TIMEOUT
   type: integer
-- description: Cashed memcached servers
-  displayName: CACHE_MEMCACHED_SERVERS
-  name: CACHE_MEMCACHED_SERVERS
+  value: "3600"
 - description: Specifies which type of caching object to use when `SCHEDULER_ENABLED` is set to `True`.
   displayName: CACHE_TYPE
   name: CACHE_TYPE
-- description: A mapping between the status of the resource events and the name of the columns of the table to display.
-  displayName: CLASS_EVENTS_STATUS_COLUMNS
-  name: CLASS_EVENTS_STATUS_COLUMNS
+  type: string
+  value: "SimpleCache"
 - description: What code path that should be shortened in "Friendly errors" to "…" for readability.
   displayName: CODE_PREFIX_TO_REMOVE
   name: CODE_PREFIX_TO_REMOVE
   type: string
+  value: "/etc/puppetlabs/code/environments"
 - description: Number of days to show history for on the daily report graphs.
   displayName: DAILY_REPORTS_CHART_DAYS
   name: DAILY_REPORTS_CHART_DAYS
   type: integer
+  value: "8"
 - description: Enable the use of daily chart graphs when looking at dashboard and node view.
   displayName: DAILY_REPORTS_CHART_ENABLED
   name: DAILY_REPORTS_CHART_ENABLED
   type: boolean
+  value: "true"
 - description: Defaults to `'production'`, as the name suggests, load all information filtered by this
   displayName: DEFAULT_ENVIRONMENT
   name: DEFAULT_ENVIRONMENT
   type: string
   value: "production"
-- description: Metrics to show when displaying node summary.
-  displayName: DISPLAYED_METRICS
-  name: DISPLAYED_METRICS
-  type: string
-  value: null
 - description: If set to `True` allows the user to view a node's latest catalog. This includes all managed
   displayName: ENABLE_CATALOG
   name: ENABLE_CATALOG
@@ -321,6 +285,7 @@ parameters:
   displayName: ENABLE_CLASS
   name: ENABLE_CLASS
   type: boolean
+  value: "false"
 - description: If `ENABLE_QUERY` is `True`, allow to fine tune the endpoints of PuppetDB APIs that
   displayName: ENABLED_QUERY_ENDPOINTS
   name: ENABLE_QUERY
@@ -330,105 +295,66 @@ parameters:
   displayName: ENABLE_QUERY
   name: ENABLE_QUERY
   type: boolean
-- description: An ordered list of Puppet environment names that will be shown immediately after "All Environments"
-  displayName: FAVORITE_ENVS
-  name: FAVORITE_ENVS
-  type: string
-- description: A list of fact names to tell PuppetBoard to generate a pie-chart on the fact page. With some fact
-  displayName: GRAPH_FACTS
-  name: GRAPH_FACTS
-  type: string
 - description: Specify the type of graph to display.
   displayName: GRAPH_TYPE
   name: GRAPH_TYPE
   type: string
-- description:  A list of tuples that serve as the column header and the fact name to search for to create
-  displayName: INVENTORY_FACTS
-  name: INVENTORY_FACTS
-  type: string
-- description: A mapping between fact name and jinja template to customize display
-  displayName: INVENTORY_FACT_TEMPLATES
-  name: INVENTORY_FACT_TEMPLATES
-  type: string
+  value: "pie"
 - description: Default number of reports to show when when looking at a node.
   displayName: LITTLE_TABLE_COUNT
   name: LITTLE_TABLE_COUNT
   type: integer
   value: "10"
-#- description: If set to `True` then timestamps are shown using your browser's timezone. Otherwise UTC is used. Defaults to `True`.
-#  displayName: LOCALISE_TIMESTAMP
-#  name: LOCALISE_TIMESTAMP
-#  type: boolean
-#  value: "true"
-#- description: A string representing the loglevel. It defaults to `'info'` but can be changed to `'warning'` or
-#  displayName: LOGLEVEL
-#  name: LOGLEVEL
-#  type: string
-#  value: "info"
-#- description: If set to `True` load static assets (jquery, semantic-ui, etc) from the local web server instead
-#  displayName: OFFLINE_MODE
-#  name: OFFLINE_MODE
-#  type: boolean
-#  value: "false"
-#- description: Filter to apply to the overview page. 
-#  displayName: OVERVIEW_FILTER
-#  name: OVERVIEW_FILTER
-#  type: string
-#  value: "None"
-#- description: The title of the main page.
-#  displayName: PAGE_TITLE
-#  name: PAGE_TITLE
-#  required: false
-#  value: "Puppetboard"
-#  type: string
-- description: The PuppetDB SSL Certificate
-  displayName: PUPPETDB_CERT
-  name: PUPPETDB_CERT
+- description: If set to `True` then timestamps are shown using your browser's timezone. Otherwise UTC is used. Defaults to `True`.
+  displayName: LOCALISE_TIMESTAMP
+  name: LOCALISE_TIMESTAMP
+  type: boolean
+  value: "true"
+- description: A string representing the loglevel. It defaults to `'info'` but can be changed to `'warning'` or
+  displayName: LOGLEVEL
+  name: LOGLEVEL
   type: string
-  value: null
-- description: The PuppetDB Key
-  displayName: PUPPETDB_KEY
-  name: PUPPETDB_KEY
+  value: "info"
+- description: If set to `True` load static assets (jquery, semantic-ui, etc) from the local web server instead
+  displayName: OFFLINE_MODE
+  name: OFFLINE_MODE
+  type: boolean
+  value: "false"
+- description: The title of the main page.
+  displayName: PAGE_TITLE
+  name: PAGE_TITLE
+  required: false
+  value: "Puppetboard"
   type: string
-  value: null
-- description: PuppetDB protocol
-  displayName: PUPPETDB_PROTO
-  name: PUPPETDB_PROTO
-  type: string
-  #value: "http"
 - description: Defaults to 20 seconds, but you might need to increase this value.
   displayName: PUPPETDB_TIMEOUT
+  required: false
   type: integer
   name: PUPPETDB_TIMEOUT
   value: "20"
   type: integer
-#- description: The number of seconds to wait until the index page is automatically refreshed.
-#  displayName: REFRESH_RATE
-#  name: REFRESH_RATE
-#  type: integer
-#- description: The limit of the number of reports to load on the node or any reports page.
-#  displayName: REPORTS_COUNT
-#  name: REPORTS_COUNT
-#  type: integer
-#  value: "100"
-#- description: If set to `True` then a scheduler instance is created in order to execute scheduled jobs.
-#  displayName: SCHEDULER_ENABLED
-#  name: SCHEDULER_ENABLED
-#  type: boolean
-#- description: List of the scheduled jobs to trigger within a worker.
-#  displayName: SCHEDULER_JOBS
-#  name: SCHEDULER_JOBS
-#  type: string
-#- description:  Show errors as friendly or raw output.
-#  displayName: SHOW_ERROR_AS
-#  name: SHOW_ERROR_AS
-#  type: string
-#- description:  Configure the dropdown to limit number of hosts to show per page.
-#  displayName: TABLE_COUNT_SELECTOR
-#  name: TABLE_COUNT_SELECTOR
-#  type: string
-#  value: "10,20,50,100,500"
-#- description: If set to `True` then Overview and Nodes list shows exact number of changed resources
-#  displayName: WITH_EVENT_NUMBERS
-#  name: WITH_EVENT_NUMBERS
-#  type: boolean
+- description: The number of seconds to wait until the index page is automatically refreshed.
+  displayName: REFRESH_RATE
+  name: REFRESH_RATE
+  type: integer
+  value: "30"
+- description: The limit of the number of reports to load on the node or any reports page.
+  displayName: REPORTS_COUNT
+  name: REPORTS_COUNT
+  type: integer
+  value: "100"
+- description: If set to `True` then a scheduler instance is created in order to execute scheduled jobs.
+  displayName: SCHEDULER_ENABLED
+  name: SCHEDULER_ENABLED
+  type: boolean
+  value: "false"
+- description:  Show errors as friendly or raw output.
+  displayName: SHOW_ERROR_AS
+  name: SHOW_ERROR_AS
+  type: string
+  value: "friendly"
+- description: If set to `True` then Overview and Nodes list shows exact number of changed resources
+  displayName: WITH_EVENT_NUMBERS
+  name: WITH_EVENT_NUMBERS
+  type: boolean
+  value: "true"
