@@ -211,7 +211,7 @@ parameters:
 - description: The port on which the Puppetboard server offers up the web interface.
   displayName: Puppetboard Port
   name: PUPPETBOARD_PORT
-  value: "80"
+  value: "1024"
   type: integer
 - description: The port on which OpenShift offers the Puppetboard service.
   displayName: OpenShift Service Port
