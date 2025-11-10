@@ -288,7 +288,7 @@ parameters:
   value: "false"
 - description: If `ENABLE_QUERY` is `True`, allow to fine tune the endpoints of PuppetDB APIs that
   displayName: ENABLED_QUERY_ENDPOINTS
-  name: ENABLE_QUERY
+  name: ENABLED_QUERY_ENDPOINTS
   type: boolean
   value: "true"
 - description: Defaults to `True` causing a Query tab to show up in the web interface allowing users to write and execute arbitrary queries against a set of endpoints in PuppetDB
