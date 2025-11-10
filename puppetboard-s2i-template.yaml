@@ -80,8 +80,6 @@ objects:
                 value: ${PUPPETBOARD_PORT}
               - name: UNRESPONSIVE_HOURS
                 value: ${UNRESPONSIVE_HOURS}
-              - name: PUPPETBOARD_URL_PREFIX
-                value: ${PUPPETBOARD_URL_PREFIX}
               - name: PUPPETDB_SSL_VERIFY
                 value: ${PUPPETDB_SSL_VERIFY}
               - name: PUPPETDB_TIMEOUT
@@ -235,12 +233,6 @@ parameters:
   required: true
   value: "2"
   type: integer
-- description: Env variable to a value like `/puppetboard` to run the app under a URL prefix.
-  displayName: PUPPETBOARD_URL_PREFIX
-  name: PUPPETBOARD_URL_PREFIX
-  required: false
-  value: "/"
-  type: string
 - description: Verify/Require SSL connectivity
   displayName: PUPPETDB_SSL_VERIFY
   name: PUPPETDB_SSL_VERIFY
